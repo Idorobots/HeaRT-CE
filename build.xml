@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir="." default="build" name="HeaRT-CE">
+  <property name="debuglevel" value="source,lines,vars"/>
+  <property name="mainclass" value="ce.Main"/>
+  
+  <path id="lib.classpath">
+    <pathelement location="bin"/>
+    <pathelement location="lib/JHeroic.jar"/>
+  </path>
+
+  <target name="init">
+    <mkdir dir="bin"/>
+    <copy includeemptydirs="false" todir="bin">
+      <fileset dir="src">
+	<exclude name="**/*.java"/>
+      </fileset>
+    </copy>
+  </target>
+
+  <target name="clean">
+    <delete dir="bin"/>
+  </target>
+
+  <target depends="init" name="build">
+    <echo message="${ant.project.name}: ${ant.file}"/>
+    <mkdir dir="bin/classes"/>
+    <javac debug="true" debuglevel="${debuglevel}" destdir="bin/classes">
+      <src path="src"/>
+      <classpath refid="lib.classpath"/>
+    </javac>
+  </target>
+
+  <target name="jar" depends="build">
+    <mkdir dir="bin/jar"/>
+    <jar destfile="bin/jar/${ant.project.name}.jar" basedir="bin/classes">
+      <manifest>
+	<attribute name="Main-Class" value="${mainclass}"/>
+      </manifest>
+    </jar>
+  </target>
+  
+  <target name="run" depends="jar">
+    <java classname="${mainclass}" fork="true">
+      <classpath>
+      <path  refid="lib.classpath"/>
+      <path location="bin/jar/${ant.project.name}.jar"/>
+      </classpath>
+    </java>
+  </target>
+</project>
