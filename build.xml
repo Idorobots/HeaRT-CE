@@ -6,6 +6,8 @@
   <path id="lib.classpath">
     <pathelement location="bin"/>
     <pathelement location="lib/JHeroic.jar"/>
+    <pathelement location="lib/jersey-bundle-1.18.jar"/>
+    <pathelement location="lib/asm-3.1.jar"/>
   </path>
 
   <target name="init">

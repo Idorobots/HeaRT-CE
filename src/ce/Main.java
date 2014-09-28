@@ -1,18 +1,18 @@
 package ce;
 
-import JHeroic.JHeroic;
-import JHeroic.JHModel;
+import ce.http.HttpServer;
 
 public class Main {
     public static void main(String[] args) {
         System.out.println("Hello HeaRT!");
 
-        JHeroic jh = new JHeroic(1, "localhost", 8090);
-
         try {
-            for(JHModel m : jh.getModelList()) {
-                System.out.println(m.getReplayString());
-            }
+            HttpServer restful = new HttpServer("localhost", 1234);
+            restful.start();
+
+            System.out.println("Press any key to exit!");
+            System.in.read();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
