@@ -16,8 +16,9 @@ import JHeroic.*;
 public class ModelDispatcher {
     static JHeroicInterface heart = new JHeroic();
 
+    // /API_VERSION/model/list/ - lists all models.
     @GET
-    @Path("/get-list")
+    @Path("/list")
     @Produces(MediaType.TEXT_PLAIN)
     public String getModelList() throws Exception {
         String out = "[";
@@ -29,6 +30,7 @@ public class ModelDispatcher {
         return out.substring(0, out.lastIndexOf(",")) + "]."; // Remove last coma.
     }
 
+    // /API_VERSION/model/verify/ - verifies a model.
     @GET
     @Path("/verify/{mode}/{model}/{user}")
     @Produces(MediaType.TEXT_PLAIN)
@@ -38,8 +40,23 @@ public class ModelDispatcher {
         return heart.verifyModel(userName, modelName, mode.intValue());
     }
 
+    // /API_VERSION/model/run/ - runs a model.
+    @POST
+    @Path("/run/{type}/{model}/{user}")
+    @Produces(MediaType.TEXT_PLAIN)
+    public String runInference(@PathParam("type") String infType,
+                               @PathParam("model") String modelName,
+                               @PathParam("user") String userName,
+                               String data) throws Exception {
+        String[] tableState = data.split("\\n");
+
+        return heart.runInference(userName, modelName, infType, tableState[0], tableState[1]);
+    }
+
+    // /API_VERSION/model/definition/ - modifies model definitions.
+    // /API_VERSION/model/state/ - modifies model states.
     @GET
-    @Path("/get/{model}/{user}")
+    @Path("/definition/{model}/{user}")
     @Produces(MediaType.TEXT_PLAIN)
     public String getUserModel(@PathParam("model") String modelName,
                                @PathParam("user") String userName) throws Exception {
@@ -47,7 +64,7 @@ public class ModelDispatcher {
     }
 
     @POST
-    @Path("/add/{model}/{user}")
+    @Path("/definition/{model}/{user}")
     @Produces(MediaType.TEXT_PLAIN)
     public String addUserModel(@PathParam("model") String modelName,
                                @PathParam("user") String userName,
@@ -56,7 +73,7 @@ public class ModelDispatcher {
     }
 
     @DELETE
-    @Path("/remove/{model}/{user}")
+    @Path("/definition/{model}/{user}")
     @Produces(MediaType.TEXT_PLAIN)
     public String removeUserModel(@PathParam("model") String modelName,
                                   @PathParam("user") String userName) throws Exception {
@@ -64,21 +81,22 @@ public class ModelDispatcher {
     }
 
     @POST
-    @Path("/add-state/{model}/{user}")
+    @Path("/state/{state}/{model}/{user}")
     @Produces(MediaType.TEXT_PLAIN)
     public String addStateToModel(@PathParam("model") String modelName,
                                   @PathParam("user") String userName,
+                                  @PathParam("state") String stateName,
                                   String data) throws Exception {
-        String[] nameDef = data.split("\\n");
-        return heart.addStateToModel(userName, modelName, nameDef[0], nameDef[1]);
+        return heart.addStateToModel(userName, modelName, stateName, data);
     }
 
-    @POST
-    @Path("/remove-state/{model}/{user}")
+    @DELETE
+    @Path("/state/{state}/{model}/{user}")
     @Produces(MediaType.TEXT_PLAIN)
     public String removeStateFromModel(@PathParam("model") String modelName,
-                                       @PathParam("user") String userName) throws Exception {
-        return heart.removeStateFromModel(userName, ModelName, data);
+                                       @PathParam("user") String userName,
+                                       @PathParam("state") String stateName) throws Exception {
+        return heart.removeStateFromModel(userName, ModelName, stateName);
     }
 
 }

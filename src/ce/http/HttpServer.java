@@ -2,10 +2,10 @@ package ce.http;
 
 import java.io.IOException;
 import com.sun.jersey.api.container.httpserver.HttpServerFactory;
-//import com.sun.net.httpserver.HttpServer;
+import JHeroic.JHeroicInterface;
 
 public class HttpServer {
-    public static final String API_VERSION = "v1.0";
+    public static final String API_VERSION = JHeroicInterface.protocolVersion;
     private String host = null;
     private Integer port = -1;
     private com.sun.net.httpserver.HttpServer server = null;
