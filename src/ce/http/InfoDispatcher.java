@@ -21,3 +21,4 @@ public class InfoDispatcher {
     public String getProtocolVersion() throws Exception {
         return JHeroicInterface.protocolVersion;
     }
+}
