@@ -14,7 +14,7 @@ import JHeroic.*;
 
 @Path("/model")
 public class ModelDispatcher {
-    static JHeroicInterface heart = new JHeroic();
+    static JHeroicInterface heart = new JHeroic(1, "localhost", 8090);
 
     // /API_VERSION/model/list/ - lists all models.
     @GET
@@ -24,7 +24,7 @@ public class ModelDispatcher {
         String out = "[";
 
         for(JHModel m : heart.getModelList()) {
-            out += m.toString() + ",";
+            out += m.getReplyString() + ",";
         }
 
         return out.substring(0, out.lastIndexOf(",")) + "]."; // Remove last coma.
